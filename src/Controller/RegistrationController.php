@@ -25,6 +25,9 @@ class RegistrationController extends Controller
 
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
+            $doc = $this->getDoctrine()->getManager();
+            $doc->persist($user);
+            $doc->flush();
             return new Response("Регистрация успешна!");
         }
 
