@@ -1,19 +1,19 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <form style="text-align: center; max-width: 330px; margin: auto; padding-top: 5%"
+    <form class="form-group" style="text-align: center; max-width: 330px; margin: auto; padding-top: 5%"
           action='{{ path('login') }}' method="post">
-        <div>
+        <div class="form-group">
             <h1>Войти</h1>
         </div>
-        <div>
-            <input type="text" name="_username" placeholder="Логин" value="{{ last_username }}"/>
+        <div class="form-group">
+            <input type="text" name="_username" class="form-control" placeholder="Логин" value="{{ last_username }}"/>
         </div>
-        <div>
-            <input type="password" name="_password" placeholder="Пароль"/>
+        <div class="form-group">
+            <input type="password" name="_password" class="form-control" placeholder="Пароль"/>
         </div>
-        <div>
-            <button>Войти</button>
+        <div class="form-group">
+            <button class="btn btn-success btn-block">Войти</button>
         </div>
     </form>
 {% endblock %}
