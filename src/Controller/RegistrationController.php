@@ -21,16 +21,7 @@ class RegistrationController extends Controller
     public function register(Request $request)
     {
         $user = new User();
-        $form = $this->createFormBuilder($user)
-            ->add('username', TextType::class, ['attr'=>['placeholder'=>'Введите логин']])
-            ->add('password', RepeatedType::class,
-                [
-                    'type' => PasswordType::class,
-                    'first_options' => ['attr'=>['placeholder'=>'Введите пароль'], 'label'=>' '],
-                    'second_options' => ['attr'=>['placeholder'=>'Повторите пароль'], 'label'=>' ']
-                ])
-            ->add('save', SubmitType::class, ['label' => 'зарегистрироваться'])
-            ->getForm();
+        $form = $this->createForm(UserType::class, $user);
 
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
