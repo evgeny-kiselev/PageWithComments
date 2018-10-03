@@ -2,12 +2,14 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="users")
  * @ORM\Entity
+ * @UniqueEntity(fields="username", message="Имя пользователя уже занято!")
  */
 class User implements UserInterface, \Serializable
 {
