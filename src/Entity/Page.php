@@ -1,16 +1,15 @@
 <?php
 namespace App\Entity;
 
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-use App\Entity\User;
-use App\Entity\Page;
-
+use App\Entity\Comment;
 /**
- * @ORM\Table(name="comments")
+ * @ORM\Table(name="pages")
  * @ORM\Entity
  */
-class Comment
+class Page
 {
     /**
      * @ORM\Id
@@ -19,47 +18,34 @@ class Comment
      */
     private $id;
     /**
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="comments")
-     * @ORM\JoinColumn(name="user", referencedColumnName="id")
+     * @ORM\Column(type="string", name="title")
+     * @Assert\NotBlank()
      */
-    private $autor;
+    private $title;
     /**
      * @ORM\Column(type="text", name="text")
      * @Assert\NotBlank()
      */
     private $text;
     /**
-     * @ORM\Column(type="date", name="date")
+     * @ORM\OneToMany(targetEntity="Comment", mappedBy="page")
      */
-    private $date;
-    /**
-     * @ORM\ManyToOne(targetEntity="Page", inversedBy="comments")
-     *@ORM\JoinColumn(name="page", referencedColumnName="id")
-     */
-    private $page;
+    private $comments;
 
     /**
      * @return mixed
      */
-    public function getPage()
+    public function getTitle()
     {
-        return $this->page;
+        return $this->title;
     }
 
     /**
-     * @return mixed
+     * @param mixed $title
      */
-    public function getAutor()
+    public function setTitle($title): void
     {
-        return $this->autor;
-    }
-
-    /**
-     * @param mixed $autor
-     */
-    public function setAutor($autor): void
-    {
-        $this->autor = $autor;
+        $this->title = $title;
     }
 
     /**
@@ -81,17 +67,17 @@ class Comment
     /**
      * @return mixed
      */
-    public function getDate()
+    public function getComments()
     {
-        return $this->date;
+        return $this->comments;
     }
 
     /**
-     * @param mixed $date
+     * @param mixed $comments
      */
-    public function setDate($date): void
+    public function setComments($comments): void
     {
-        $this->date = $date;
+        $this->comments = $comments;
     }
 
     /**
@@ -101,6 +87,4 @@ class Comment
     {
         return $this->id;
     }
-
-
 }

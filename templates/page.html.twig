@@ -2,39 +2,39 @@
 
 {% block title %}Тестовая страница с комментариями{% endblock %}
 {% block body %}
-    <div class="container">
-        <article>
-            <div class="row">
-                <div class="col">
-                    <section style="text-align: center;">
-                        <h1>Статья</h1>
-                        <div style="text-align: right">
-                            <button class="btn btn-primary">Войти</button>
-                        </div>
-                    </section>
+<div class="container">
+    <article>
+        <div class="row">
+            <div class="col">
+                <section style="text-align: center;">
+                    <h1>{{ page.title }}</h1>
+                    <div style="text-align: right">
+                        <button class="btn btn-primary">Войти</button>
+                    </div>
+                </section>
+            </div>
+        </div>
+        <div class="row">
+            <section>
+                {{ page.text }}
+            </section>
+        </div>
+        <div class="row">
+            <section>
+                <br>
+                <h5 style="text-align: left;">Комментарии к статье</h5>
+                <div>
+                    {% if page.comments|length > 0 %}
+                    {% for comment in page.comments %}
+                        {% include 'comment.html.twig' with {'comment':comment} %}
+                    {% endfor %}
+                    {% else %}
+                        Здесь еще нет ниодного комментария, ваш может быть первым...
+                    {% endif %}
                 </div>
-            </div>
-            <div class="row">
-                <section>
-                    Определение статьи в Википедии зависит от точки зрения. Не все такие определения являются достаточно
-                    чёткими.
-                    Наиболее общее понятие — страница. Так называются поименованные записи в базе данных Википедии.
-                    Имена страниц относятся к разным пространствам.
-                    Все статьи принадлежат основному пространству имён (именуемому иногда «пространством статей»),
-                    однако обратное неверно. Перенаправления и страницы значений также встречаются в основном
-                    пространстве,
-                    однако к статьям обычно не относятся.
-                    С точки зрения Правил Википедии заготовки статей являются частным случаем статей.
-                    Термин заготовка описывает не сущность объекта, а текущий уровень его качества.
-                </section>
-            </div>
-            <div class="row">
-                <section>
-                    <br>
-                    <h5 style="text-align: left;">Комментарии к статье</h5>
-                </section>
-            </div>
-        </article>
-    </div>
+            </section>
+        </div>
+    </article>
+</div>
 
 {% endblock %}
