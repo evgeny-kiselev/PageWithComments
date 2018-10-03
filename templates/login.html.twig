@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <form style="text-align: center; max-width: 330px; margin: auto; padding-top: 5%"
+          action='{{ path('login') }}' method="post">
+        <div>
+            <h1>Войти</h1>
+        </div>
+        <div>
+            <input type="text" name="_username" placeholder="Логин" value="{{ last_username }}"/>
+        </div>
+        <div>
+            <input type="password" name="_password" placeholder="Пароль"/>
+        </div>
+        <div>
+            <button>Войти</button>
+        </div>
+    </form>
+{% endblock %}

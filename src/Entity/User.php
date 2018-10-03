@@ -38,8 +38,6 @@ class User implements UserInterface, \Serializable
     public function __construct()
     {
         $this->isActive = true;
-        // может не понадобиться, см. раздел о соли ниже
-        // $this->salt = md5(uniqid('', true));
     }
 
     public function setUsername($name){
@@ -57,8 +55,6 @@ class User implements UserInterface, \Serializable
 
     public function getSalt()
     {
-        // вам *может* понадобиться настоящая соль в зависимости от вашего кодировщика
-        // см. раздел о соли ниже
         return null;
     }
 
@@ -83,8 +79,6 @@ class User implements UserInterface, \Serializable
             $this->id,
             $this->username,
             $this->password,
-            // см. раздел о соли ниже
-            // $this->salt,
         ));
     }
 
@@ -94,9 +88,7 @@ class User implements UserInterface, \Serializable
         list (
             $this->id,
             $this->username,
-            $this->password,
-            // см. раздел о соли ниже
-            // $this->salt
+            $this->password
             ) = unserialize($serialized);
     }
 }
