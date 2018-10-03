@@ -15,6 +15,12 @@ class LoginController extends Controller
      */
     public function login(Request $request, AuthenticationUtils $authUtils)
     {
-        return new Response('Hello');
+        $lastError = $authUtils->getLastAuthenticationError();
+        $lastUserName = $authUtils->getLastUsername();
+
+        return $this->render('login.html.twig',[
+            'error' => $lastError,
+            'last_username' => $lastUserName
+        ]);
     }
 }
