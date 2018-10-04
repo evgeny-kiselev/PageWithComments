@@ -39,7 +39,7 @@
                             </div>
                         {% else %}
                             <div style="border-bottom: outset #5eb5e0 2px">
-                                Здесь еще нет ниодного комментария, ваш может быть первым...
+                                Здесь еще нет ни одного комментария, ваш может быть первым...
                             </div><br>
                         {% endif %}
                     </div>
@@ -82,6 +82,7 @@
             comment_text: ko.observable("")
         }
         ko.applyBindings(viewModel)
+        {% if user_role != 'anon.' %}
         var addItemBtn = document.getElementById("sendButton");
         if(addItemBtn) {
             addItemBtn.addEventListener("click", function (e) {
@@ -96,6 +97,7 @@
 
             });
         }
+        {% endif %}
         $.get("/get_all_comments/" +{{ page.id }}, function (data) {
             var comments = JSON.parse(data);
             comments.forEach(function (data) {
