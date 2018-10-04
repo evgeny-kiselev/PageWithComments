@@ -8,9 +8,11 @@
                 <div class="col">
                     <section style="text-align: center;">
                         <h1>{{ page.title }}</h1>
+                        {% if user_role == 'anon.' %}
                         <div style="text-align: right">
                             <button class="btn btn-primary" onclick='location.href="/login"'>Войти</button>
                         </div>
+                        {% endif %}
                     </section>
                 </div>
             </div>
@@ -29,14 +31,16 @@
                                 <div>
                                     <br>
                                     <span data-bind="text: text"></span> <br>
-                                    <div style="text-align: left">
+                                    <div style="text-align: left; border-top: outset #5eb5e0 2px">
                                         <span data-bind="text: username"></span>
                                         <span data-bind="text: date"></span> <br>
                                     </div>
                                 </div>
                             </div>
                         {% else %}
-                            Здесь еще нет ниодного комментария, ваш может быть первым...
+                            <div style="border-bottom: outset #5eb5e0 2px">
+                                Здесь еще нет ниодного комментария, ваш может быть первым...
+                            </div><br>
                         {% endif %}
                     </div>
                 </section>

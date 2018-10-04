@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class PageController extends Controller
 {
     /**
-     * @Route("/{page_id}", name = "page")
+     * @Route("/page/{page_id}", name = "page")
      */
     public function page($page_id){
         $doc = $this->getDoctrine()->getRepository(Page::class);
