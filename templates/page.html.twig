@@ -9,9 +9,9 @@
                     <section style="text-align: center;">
                         <h1>{{ page.title }}</h1>
                         {% if user_role == 'anon.' %}
-                        <div style="text-align: right">
-                            <button class="btn btn-primary" onclick='location.href="/login"'>Войти</button>
-                        </div>
+                            <div style="text-align: right">
+                                <button class="btn btn-primary" onclick='location.href="/login"'>Войти</button>
+                            </div>
                         {% endif %}
                     </section>
                 </div>
@@ -26,44 +26,47 @@
                     <br>
                     <h5 style="text-align: left;">Комментарии к статье</h5>
                     <div>
-                        {% if page.comments|length > 0 %}
-                            <div data-bind="foreach: comments">
-                                <div>
-                                    <br>
-                                    <span data-bind="text: text"></span> <br>
-                                    <div style="text-align: left; border-top: outset #5eb5e0 2px">
-                                        <span data-bind="text: username"></span>
-                                        <span data-bind="text: date"></span> <br>
-                                    </div>
+
+                        <div data-bind="foreach: comments">
+                            <div>
+                                <br>
+                                <span data-bind="text: text"></span> <br>
+                                <div style="text-align: left; border-top: outset #5eb5e0 2px">
+                                    <span data-bind="text: username"></span>
+                                    <span data-bind="text: date"></span> <br>
                                 </div>
                             </div>
-                        {% else %}
-                            <div style="border-bottom: outset #5eb5e0 2px">
-                                Здесь еще нет ни одного комментария, ваш может быть первым...
-                            </div><br>
+                        </div>
+                        {% if page.comments|length < 1 %}
+                            <div data-bind="visible: without_comments_msg">
+                                <div style="border-bottom: outset #5eb5e0 2px">
+                                    Здесь еще нет ни одного комментария, ваш может быть первым...
+                                </div>
+                                <br>
+                            </div>
                         {% endif %}
                     </div>
                 </section>
             </div>
             <div class="row">
-                <div class="col"></div>
-                <div class="col-6">
+                <div class="col">
                     {% if user_role != 'anon.' %}
                         <div class="form-group">
                             <div class="form-group">
-                                <label for="comment_text">Комментарий:</label>
-                                <textarea data-bind="value: comment_text" class="form-control" id="comment_text"
-                                          placeholder="Введите текст комментария" rows="5"></textarea>
+                                <div style="max-width: 500px; margin: auto">
+                                    <label for="comment_text">Комментарий:</label>
+                                    <textarea data-bind="value: comment_text" class="form-control" id="comment_text"
+                                              placeholder="Введите текст комментария" rows="5"></textarea>
+                                </div>
                             </div>
                         </div>
-                        <div class="form-group" style="text-align: center">
+                        <div class="form-group" style="text-align: center; max-width: 500px; margin: auto">
                             <button class="btn btn-success" style="width: 50%" id="sendButton">Отправить</button>
                         </div>
                     {% else %}
                         <div style="margin: auto">Для того чтобы писать комментарии, пожалуйста, авторизуйтесь</div>
                     {% endif %}
                 </div>
-                <div class="col"></div>
             </div>
         </article>
     </div>
@@ -77,23 +80,24 @@
             this.text = text;
             this.username = username;
         }
+
         var viewModel = {
             comments: ko.observableArray([]),
-            comment_text: ko.observable("")
+            comment_text: ko.observable(""),
+            without_comments_msg: ko.observable(true)
         }
         ko.applyBindings(viewModel)
         {% if user_role != 'anon.' %}
         var addItemBtn = document.getElementById("sendButton");
-        if(addItemBtn) {
+        if (addItemBtn) {
             addItemBtn.addEventListener("click", function (e) {
-                var data = {
-                    'text': viewModel.comment_text()
-                };
-                $.post("/add_comment/"+{{ page.id }}, {'text':viewModel.comment_text()},function (date) {
+                if (viewModel.comment_text().length == 0) return;
+                viewModel.without_comments_msg(false);
+                $.post("/add_comment/" +{{ page.id }}, {'text': viewModel.comment_text()}, function (date) {
                     viewModel.comments.push(
                         new Comment(viewModel.comment_text(), date, "{{ user.username }}"));
                     viewModel.comment_text("");
-                } )
+                })
 
             });
         }

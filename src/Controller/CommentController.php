@@ -31,9 +31,11 @@ class CommentController extends Controller
     public function addComment($page_id){
         $doc = $this->getDoctrine();
         $page = $doc->getRepository(Page::class)->find($page_id);
-        if($page == null) return new Response("not found", 404);
+        if($page == null) return new Response("not found page", 404);
         $user = $this->get('security.token_storage')->getToken()->getUser();
-        $text = $_POST['text'];
+        if($user == null) return new Response("not found user", 404);
+        $text = htmlspecialchars($_POST['text']);
+        if(strlen($text) < 1) return new Response("text is empty", 404);
 
         $comm = new Comment();
         $comm->setPage($page);
