@@ -49,13 +49,13 @@
                 <div class="col"></div>
                 <div class="col-6">
                     {% if user_role != 'anon.' %}
-                        <form class="form-group">
+                        <div class="form-group">
                             <div class="form-group">
                                 <label for="comment_text">Комментарий:</label>
-                                <textarea class="form-control" id="comment_text"
+                                <textarea data-bind="value: comment_text" class="form-control" id="comment_text"
                                           placeholder="Введите текст комментария" rows="5"></textarea>
                             </div>
-                        </form>
+                        </div>
                         <div class="form-group" style="text-align: center">
                             <button class="btn btn-success" style="width: 50%" id="sendButton">Отправить</button>
                         </div>
@@ -77,17 +77,25 @@
             this.text = text;
             this.username = username;
         }
-
         var viewModel = {
-            comments: ko.observableArray([])
+            comments: ko.observableArray([]),
+            comment_text: ko.observable("")
         }
         ko.applyBindings(viewModel)
         var addItemBtn = document.getElementById("sendButton");
-        addItemBtn.addEventListener("click", function (e) {
-            viewModel.comments.push(new Comment("комментарий", "12-08:1992"));
+        if(addItemBtn) {
+            addItemBtn.addEventListener("click", function (e) {
+                var data = {
+                    'text': viewModel.comment_text()
+                };
+                $.post("/add_comment/"+{{ page.id }}, {'text':viewModel.comment_text()},function (date) {
+                    viewModel.comments.push(
+                        new Comment(viewModel.comment_text(), date, "{{ user.username }}"));
+                    viewModel.comment_text("");
+                } )
 
-        });
-
+            });
+        }
         $.get("/get_all_comments/" +{{ page.id }}, function (data) {
             var comments = JSON.parse(data);
             comments.forEach(function (data) {

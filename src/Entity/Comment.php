@@ -102,6 +102,14 @@ class Comment
         return $this->id;
     }
 
+    /**
+     * @param mixed $page
+     */
+    public function setPage($page): void
+    {
+        $this->page = $page;
+    }
+
     public function toJSON(){
         return json_encode(
             [

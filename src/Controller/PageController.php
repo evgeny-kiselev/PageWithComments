@@ -27,6 +27,6 @@ class PageController extends Controller
      * @Route("/", name = "p_load")
      */
     public function page_load(){
-        return $this->page(1);
+      return $this->redirect("/page/1");
     }
 }
