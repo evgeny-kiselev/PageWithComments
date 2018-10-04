@@ -102,5 +102,14 @@ class Comment
         return $this->id;
     }
 
-
+    public function toJSON(){
+        return json_encode(
+            [
+                'username'=>$this->autor!=null?$this->autor->getUserName():null,
+                'text'=>$this->text,
+                'date'=>$this->date->format("d-m-Y H:i:s"),
+                'page_id'=>$this->page != null?$this->page->getId():null
+            ]
+        );
+    }
 }

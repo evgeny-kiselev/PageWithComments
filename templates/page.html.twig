@@ -25,9 +25,16 @@
                     <h5 style="text-align: left;">Комментарии к статье</h5>
                     <div>
                         {% if page.comments|length > 0 %}
-                            {% for comment in page.comments %}
-                                {% include 'comment.html.twig' with {'comment':comment} %}
-                            {% endfor %}
+                            <div data-bind="foreach: comments">
+                                <div>
+                                    <br>
+                                    <span data-bind="text: text"></span> <br>
+                                    <div style="text-align: left">
+                                        <span data-bind="text: username"></span>
+                                        <span data-bind="text: date"></span> <br>
+                                    </div>
+                                </div>
+                            </div>
                         {% else %}
                             Здесь еще нет ниодного комментария, ваш может быть первым...
                         {% endif %}
@@ -38,16 +45,16 @@
                 <div class="col"></div>
                 <div class="col-6">
                     {% if user_role != 'anon.' %}
-                            <form class="form-group">
-                                <div class="form-group">
-                                    <label for="comment_text">Комментарий:</label>
-                                    <textarea class="form-control" id="comment_text"
-                                              placeholder="Введите текст комментария" rows="5"></textarea>
-                                </div>
-                                <div class="form-group" style="text-align: center">
-                                    <button class="btn btn-success" style="width: 50%">Отправить</button>
-                                </div>
-                            </form>
+                        <form class="form-group">
+                            <div class="form-group">
+                                <label for="comment_text">Комментарий:</label>
+                                <textarea class="form-control" id="comment_text"
+                                          placeholder="Введите текст комментария" rows="5"></textarea>
+                            </div>
+                        </form>
+                        <div class="form-group" style="text-align: center">
+                            <button class="btn btn-success" style="width: 50%" id="sendButton">Отправить</button>
+                        </div>
                     {% else %}
                         <div style="margin: auto">Для того чтобы писать комментарии, пожалуйста, авторизуйтесь</div>
                     {% endif %}
@@ -57,4 +64,32 @@
         </article>
     </div>
 
+{% endblock %}
+{% block javascripts %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js"></script>
+    <script>
+        function Comment(text, date, username = "") {
+            this.date = date;
+            this.text = text;
+            this.username = username;
+        }
+
+        var viewModel = {
+            comments: ko.observableArray([])
+        }
+        ko.applyBindings(viewModel)
+        var addItemBtn = document.getElementById("sendButton");
+        addItemBtn.addEventListener("click", function (e) {
+            viewModel.comments.push(new Comment("комментарий", "12-08:1992"));
+
+        });
+
+        $.get("/get_all_comments/" +{{ page.id }}, function (data) {
+            var comments = JSON.parse(data);
+            comments.forEach(function (data) {
+                var comment = JSON.parse(data);
+                viewModel.comments.push(new Comment(comment.text, comment.date, comment.username));
+            });
+        });
+    </script>
 {% endblock %}
