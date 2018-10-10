@@ -11,9 +11,6 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class PageController extends Controller
 {
-    /**
-     * @Route("/page/{page_id}", name = "page")
-     */
     public function page($page_id){
         $doc = $this->getDoctrine()->getRepository(Page::class);
         $page = $doc->find($page_id);
@@ -21,12 +18,5 @@ class PageController extends Controller
         if($page != null)
             return $this->render('page.html.twig',['page'=>$page,'user'=>$user,'user_role'=>$user]);
         else return new Response("PAGE NOT FOUND!", 404);
-    }
-
-    /**
-     * @Route("/", name = "p_load")
-     */
-    public function page_load(){
-      return $this->redirect("/page/1");
     }
 }

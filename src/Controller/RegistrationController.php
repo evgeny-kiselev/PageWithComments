@@ -16,9 +16,6 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class RegistrationController extends Controller
 {
-    /**
-     * @Route("/register", name = "register")
-     */
     public function register(Request $request, UserPasswordEncoderInterface $encoder)
     {
         $user = new User();
