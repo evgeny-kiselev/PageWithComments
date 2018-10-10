@@ -7,6 +7,7 @@ use App\Entity\Page;
 use App\Entity\User;
 use function MongoDB\BSON\toJSON;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -28,13 +29,13 @@ class CommentController extends Controller
     /**
      * @Route("/add_comment/{page_id}")
      */
-    public function addComment($page_id){
+    public function addComment(Request $request,$page_id){
         $doc = $this->getDoctrine();
         $page = $doc->getRepository(Page::class)->find($page_id);
         if($page == null) return new Response("not found page", 404);
         $user = $this->get('security.token_storage')->getToken()->getUser();
         if($user == null) return new Response("not found user", 404);
-        $text = htmlspecialchars($_POST['text']);
+        $text = $request->request->get('text');
         if(strlen($text) < 1) return new Response("text is empty", 404);
 
         $comm = new Comment();
